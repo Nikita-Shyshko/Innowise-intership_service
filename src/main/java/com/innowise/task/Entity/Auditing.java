@@ -1,6 +1,9 @@
 package com.innowise.task.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Version;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,17 +13,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@EnableJpaAuditing
 @Data
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditing
 {
-    @CreatedDate
     @Column(updatable = false, nullable = false)
-    private LocalDateTime CreatedAt;
+    private LocalDateTime createdAt;
 
-    @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime UpdatedAt;
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private Integer version;
 }
 
