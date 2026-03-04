@@ -1,6 +1,6 @@
-package com.innowise.task.DAOLayer.Specification;
+package com.innowise.task.specification;
 
-import com.innowise.task.Entity.PaymentCards;
+import com.innowise.task.entity.PaymentCards;
 import org.springframework.data.jpa.domain.Specification;
 
 public class PaymentCardSpecification

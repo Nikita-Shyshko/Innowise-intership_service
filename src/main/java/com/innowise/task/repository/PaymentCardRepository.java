@@ -1,12 +1,13 @@
-package com.innowise.task.DAOLayer.Repository;
+package com.innowise.task.repository;
 
-import com.innowise.task.Entity.PaymentCards;
+import com.innowise.task.entity.PaymentCards;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public interface PaymentCardRepository extends JpaRepository<PaymentCards, Long>
 
     List<PaymentCards> findAllByUserId(Long id);
 
+    @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = """
         UPDATE payment_cards
@@ -31,6 +33,7 @@ public interface PaymentCardRepository extends JpaRepository<PaymentCards, Long>
             @Param("number") String number,
             @Param("holder") String holder);
 
+    @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update PaymentCards r set r.active = :active where r.id = :id")
     int setActiveStatusOfPaymentCards(@Param("id") Long id,

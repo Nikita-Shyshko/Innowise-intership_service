@@ -1,6 +1,6 @@
-package com.innowise.task.DAOLayer.Specification;
+package com.innowise.task.specification;
 
-import com.innowise.task.Entity.Users;
+import com.innowise.task.entity.Users;
 import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification

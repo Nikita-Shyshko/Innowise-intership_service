@@ -1,4 +1,4 @@
-package com.innowise.task.Entity;
+package com.innowise.task.entity;
 
 import com.innowise.task.UserStatus;
 
@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Version;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.EnumType;
@@ -21,11 +20,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
