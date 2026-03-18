@@ -1,6 +1,6 @@
 package com.innowise.task.entity;
 
-import com.innowise.task.UserStatus;
+import com.innowise.task.util.UserStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +29,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Table(name = "users")
-public class Users extends Auditing
+public class User extends Auditing
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,5 +59,5 @@ public class Users extends Auditing
     private UserStatus active;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<PaymentCards> paymentCards;
+    private List<PaymentCard> paymentCards;
 }

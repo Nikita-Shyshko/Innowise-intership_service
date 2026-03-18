@@ -2,11 +2,11 @@ package com.innowise.task.service;
 
 import com.innowise.task.repository.PaymentCardRepository;
 import com.innowise.task.repository.UserRepository;
-import com.innowise.task.entity.PaymentCards;
-import com.innowise.task.entity.Users;
+import com.innowise.task.entity.PaymentCard;
+import com.innowise.task.entity.User;
 import com.innowise.task.exceptions.TooManyCardsForUserException;
 import com.innowise.task.exceptions.NotFoundException;
-import com.innowise.task.exceptions.TextsForExceptions.ExceptionMessages;
+import com.innowise.task.util.ExceptionMessages;
 import com.innowise.task.exceptions.ValidationException;
 import com.innowise.task.dto.PaymentCardDTO;
 import com.innowise.task.dto.PaymentCardRequestDTO;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 @RequiredArgsConstructor
-public class PaymentCardsService
+public class PaymentCardServiceImpl
 {
     private final PaymentCardRepository paymentCardsRepository;
     private final UserRepository userRepository;
@@ -47,20 +47,20 @@ public class PaymentCardsService
     )
     public PaymentCardDTO create(@NotNull(message = ExceptionMessages.CARD_DTO_MUST_NOT_BE_NULL) @Valid PaymentCardRequestDTO paymentCardDTO)
     {
-        Users users = userRepository.getUsersById(paymentCardDTO.getUserId())
+        User users = userRepository.getUsersById(paymentCardDTO.getUserId())
                 .orElseThrow(() -> new ValidationException("User not found"));
 
-        List<PaymentCards> allUsersCards = paymentCardsRepository.findAllByUserId(paymentCardDTO.getUserId());
+        List<PaymentCard> allUsersCards = paymentCardsRepository.findAllByUserId(paymentCardDTO.getUserId());
         if (allUsersCards.size() >= 5)
         {
             throw new TooManyCardsForUserException(ExceptionMessages.USER_ID_MUST_NOT_HAVE_MORE_THAN_FIVE_CARDS);
         }
 
-        PaymentCards paymentCards = paymentCardMapper.toEntityFromCreateRequest(paymentCardDTO);
+        PaymentCard paymentCards = paymentCardMapper.toEntityFromCreateRequest(paymentCardDTO);
         paymentCards.setUser(users);
         paymentCards.setActive(true);
 
-        PaymentCards savedCards = paymentCardsRepository.save(paymentCards);
+        PaymentCard savedCards = paymentCardsRepository.save(paymentCards);
         log.debug("The card with ID: {} has been created", savedCards.getId());
         return paymentCardMapper.toDto(savedCards);
     }
@@ -74,7 +74,7 @@ public class PaymentCardsService
                 .orElseThrow(() -> new NotFoundException(ExceptionMessages.CARD_NOT_FOUND + id));
     }
 
-    public Page<PaymentCardDTO> getAll(Specification<PaymentCards> specification, Pageable pageable)
+    public Page<PaymentCardDTO> getAll(Specification<PaymentCard> specification, Pageable pageable)
     {
         log.debug("Received page number of cards {}", pageable.getPageNumber());
         return paymentCardsRepository.findAll(specification, pageable)
@@ -90,20 +90,20 @@ public class PaymentCardsService
             @NotNull(message = ExceptionMessages.CARD_ID_MUST_NOT_BE_NULL) Long id,
             @NotNull(message = ExceptionMessages.CARD_DTO_MUST_NOT_BE_NULL) @Valid PaymentCardDTO paymentCardDTO)
     {
-        PaymentCards card = paymentCardsRepository.findById(id)
+        PaymentCard card = paymentCardsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessages.CARD_NOT_FOUND + id));
 
         card.setNumber(paymentCardDTO.getNumber());
         card.setHolder(paymentCardDTO.getHolder());
 
-        PaymentCards updatedCard = paymentCardsRepository.save(card);
+        PaymentCard updatedCard = paymentCardsRepository.save(card);
         log.info("Card with id={} has been updated", id);
         return paymentCardMapper.toDto(updatedCard);
     }
 
     public void delete(@NotNull(message = ExceptionMessages.CARD_ID_MUST_NOT_BE_NULL) Long id)
     {
-        PaymentCards card = paymentCardsRepository.findById(id)
+        PaymentCard card = paymentCardsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessages.CARD_NOT_FOUND + id));
         Long userId = card.getUser().getId();
 
@@ -125,7 +125,7 @@ public class PaymentCardsService
 
     public void setActiveStatus(@NotNull(message = ExceptionMessages.CARD_ID_MUST_NOT_BE_NULL) Long id, boolean status)
     {
-        PaymentCards card = paymentCardsRepository.findById(id)
+        PaymentCard card = paymentCardsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessages.CARD_NOT_FOUND + id));
         Long userId = card.getUser().getId();
 

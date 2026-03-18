@@ -1,6 +1,6 @@
 package com.innowise.task.mapper;
 
-import com.innowise.task.entity.Users;
+import com.innowise.task.entity.User;
 import com.innowise.task.dto.UserDTO;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -10,11 +10,11 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 
-public interface UsersMapper
+public interface UserMapper
 {
-    UserDTO toDTO(Users users);
+    UserDTO toDTO(User users);
 
-    Users toEntity(UserDTO userDto);
+    User toEntity(UserDTO userDto);
 }

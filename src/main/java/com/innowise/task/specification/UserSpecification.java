@@ -1,11 +1,11 @@
 package com.innowise.task.specification;
 
-import com.innowise.task.entity.Users;
+import com.innowise.task.entity.User;
 import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification
 {
-    public static Specification<Users> availabilityOfName(String name)
+    public static Specification<User> availabilityOfName(String name)
     {
         return ((root, query, criteriaBuilder) -> {
             if(name == null || name.isBlank())
@@ -19,7 +19,7 @@ public class UserSpecification
         });
     }
 
-    public static Specification<Users> availabilityOfSurname(String surname)
+    public static Specification<User> availabilityOfSurname(String surname)
     {
         return (root, query, cb) -> {
             if (surname == null || surname.isBlank()) {

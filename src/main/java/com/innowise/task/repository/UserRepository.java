@@ -1,7 +1,7 @@
 package com.innowise.task.repository;
 
-import com.innowise.task.entity.Users;
-import com.innowise.task.UserStatus;
+import com.innowise.task.entity.User;
+import com.innowise.task.util.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Users, Long>, JpaSpecificationExecutor<Users>
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>
 {
     @Query("select r from Users r where r.id = :id")
-    Optional<Users> getUsersById(@Param("id") Long id);
+    Optional<User> getUsersById(@Param("id") Long id);
 
     @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)

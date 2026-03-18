@@ -1,6 +1,6 @@
 package com.innowise.task.mapper;
 
-import com.innowise.task.entity.PaymentCards;
+import com.innowise.task.entity.PaymentCard;
 import com.innowise.task.dto.PaymentCardDTO;
 import com.innowise.task.dto.PaymentCardRequestDTO;
 import org.mapstruct.InjectionStrategy;
@@ -12,18 +12,18 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface PaymentCardMapper
 {
 
     @Mapping(source = "user.id", target = "userId")
-    PaymentCardDTO toDto(PaymentCards paymentCards);
+    PaymentCardDTO toDto(PaymentCard paymentCards);
 
     @Mapping(source = "userId", target = "user.id")
-    PaymentCards toEntity(PaymentCardDTO paymentCardDTO);
+    PaymentCard toEntity(PaymentCardDTO paymentCardDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "user", ignore = true)
-    PaymentCards toEntityFromCreateRequest(PaymentCardRequestDTO requestDTO);
+    PaymentCard toEntityFromCreateRequest(PaymentCardRequestDTO requestDTO);
 }

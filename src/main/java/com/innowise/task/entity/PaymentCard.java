@@ -26,7 +26,7 @@ import java.time.LocalDate;
 @Table(name = "payment_cards", indexes = {
         @Index(name = "user_id", columnList = "user_id")
 })
-public class PaymentCards extends Auditing
+public class PaymentCard extends Auditing
 {
 
     @Id
@@ -35,7 +35,7 @@ public class PaymentCards extends Auditing
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users user;
+    private User user;
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Number is required")

@@ -1,4 +1,4 @@
-package com.innowise.task.exceptions.TextsForExceptions;
+package com.innowise.task.util;
 
 public class ExceptionMessages
 {

@@ -1,4 +1,4 @@
-package com.innowise.task;
+package com.innowise.task.util;
 
 public enum UserStatus
 {
