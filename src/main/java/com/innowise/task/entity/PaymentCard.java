@@ -1,4 +1,4 @@
-package com.innowise.task.Entity;
+package com.innowise.task.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,18 +10,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;
-import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -30,7 +26,7 @@ import java.time.LocalDateTime;
 @Table(name = "payment_cards", indexes = {
         @Index(name = "user_id", columnList = "user_id")
 })
-public class PaymentCards extends Auditing
+public class PaymentCard extends Auditing
 {
 
     @Id
@@ -39,7 +35,7 @@ public class PaymentCards extends Auditing
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users user;
+    private User user;
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Number is required")

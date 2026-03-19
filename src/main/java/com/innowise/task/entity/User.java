@@ -1,6 +1,4 @@
-package com.innowise.task.Entity;
-
-import com.innowise.task.UserStatus;
+package com.innowise.task.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Version;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.EnumType;
@@ -21,11 +18,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,7 +27,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Table(name = "users")
-public class Users extends Auditing
+public class User extends Auditing
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,5 +57,5 @@ public class Users extends Auditing
     private UserStatus active;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<PaymentCards> paymentCards;
+    private List<PaymentCard> paymentCards;
 }
