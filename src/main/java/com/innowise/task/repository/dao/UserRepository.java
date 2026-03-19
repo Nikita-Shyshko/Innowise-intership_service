@@ -1,7 +1,7 @@
-package com.innowise.task.repository;
+package com.innowise.task.repository.dao;
 
 import com.innowise.task.entity.User;
-import com.innowise.task.util.UserStatus;
+import com.innowise.task.entity.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;

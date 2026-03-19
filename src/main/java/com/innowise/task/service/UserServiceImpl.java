@@ -1,7 +1,7 @@
 package com.innowise.task.service;
 
-import com.innowise.task.util.UserStatus;
-import com.innowise.task.repository.UserRepository;
+import com.innowise.task.entity.UserStatus;
+import com.innowise.task.repository.dao.UserRepository;
 import com.innowise.task.entity.User;
 import com.innowise.task.exceptions.NotFoundException;
 import com.innowise.task.util.ExceptionMessages;

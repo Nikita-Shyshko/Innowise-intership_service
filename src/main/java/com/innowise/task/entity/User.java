@@ -1,7 +1,5 @@
 package com.innowise.task.entity;
 
-import com.innowise.task.util.UserStatus;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;

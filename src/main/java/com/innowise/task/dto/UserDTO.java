@@ -1,6 +1,6 @@
 package com.innowise.task.dto;
 
-import com.innowise.task.util.UserStatus;
+import com.innowise.task.entity.UserStatus;
 import lombok.Data;
 
 import java.time.LocalDate;

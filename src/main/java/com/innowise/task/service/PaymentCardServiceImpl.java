@@ -1,7 +1,7 @@
 package com.innowise.task.service;
 
-import com.innowise.task.repository.PaymentCardRepository;
-import com.innowise.task.repository.UserRepository;
+import com.innowise.task.repository.dao.PaymentCardRepository;
+import com.innowise.task.repository.dao.UserRepository;
 import com.innowise.task.entity.PaymentCard;
 import com.innowise.task.entity.User;
 import com.innowise.task.exceptions.TooManyCardsForUserException;

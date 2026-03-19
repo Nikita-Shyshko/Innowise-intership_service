@@ -1,4 +1,4 @@
-package com.innowise.task.repository;
+package com.innowise.task.repository.dao;
 
 import com.innowise.task.entity.PaymentCard;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,12 +1,12 @@
-package com.innowise.task.repository;
+package com.innowise.task.repository.service;
 
 import com.innowise.task.dto.UserDTO;
-import com.innowise.task.util.UserStatus;
+import com.innowise.task.entity.UserStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-public interface User
+public interface UserRepository
 {
     UserDTO create(UserDTO dto);
     UserDTO getById(Long id);

@@ -1,4 +1,4 @@
-package com.innowise.task.repository;
+package com.innowise.task.repository.service;
 
 import com.innowise.task.dto.PaymentCardDTO;
 import com.innowise.task.dto.PaymentCardRequestDTO;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
-public interface PaymentCard
+public interface PaymentCardRepository
 {
     PaymentCardDTO create(PaymentCardRequestDTO RequestDto);
     PaymentCardDTO getById(Long id);
