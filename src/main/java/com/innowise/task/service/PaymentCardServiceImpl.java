@@ -1,11 +1,13 @@
 package com.innowise.task.service;
 
+import com.innowise.task.dto.PaymentCardFilterDTO;
 import com.innowise.task.repository.dao.PaymentCardRepository;
 import com.innowise.task.repository.dao.UserRepository;
 import com.innowise.task.entity.PaymentCard;
 import com.innowise.task.entity.User;
 import com.innowise.task.exceptions.TooManyCardsForUserException;
 import com.innowise.task.exceptions.NotFoundException;
+import com.innowise.task.specification.PaymentCardSpecification;
 import com.innowise.task.util.ExceptionMessages;
 import com.innowise.task.exceptions.ValidationException;
 import com.innowise.task.dto.PaymentCardDTO;
@@ -22,7 +24,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -74,9 +78,15 @@ public class PaymentCardServiceImpl
                 .orElseThrow(() -> new NotFoundException(ExceptionMessages.CARD_NOT_FOUND + id));
     }
 
-    public Page<PaymentCardDTO> getAll(Specification<PaymentCard> specification, Pageable pageable)
+    public Page<PaymentCardDTO> getAll(PaymentCardFilterDTO filter)
     {
-        log.debug("Received page number of cards {}", pageable.getPageNumber());
+        int pageNumber = filter.getPageNumber() != null ? filter.getPageNumber() : 0;
+        int pageSize = filter.getPageSize() != null ? filter.getPageSize() : 30;
+        String sortBy = filter.getSortedBy() != null ? filter.getSortedBy() : "id";
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+
+        Specification<PaymentCard> specification = Specification.where(PaymentCardSpecification.availabilityOfName(filter.getName()))
+                .and(PaymentCardSpecification.availabilityOfSurname(filter.getSurname()));
         return paymentCardsRepository.findAll(specification, pageable)
                 .map(paymentCardMapper::toDto);
     }
