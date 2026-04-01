@@ -1,5 +1,6 @@
 package com.innowise.task.mapper;
 
+import com.innowise.task.dto.UserRequestDTO;
 import com.innowise.task.entity.User;
 import com.innowise.task.dto.UserDTO;
 import org.mapstruct.InjectionStrategy;
@@ -17,4 +18,6 @@ public interface UserMapper
     UserDTO toDTO(User users);
 
     User toEntity(UserDTO userDto);
+
+    User toEntityFromCreateRequest(UserRequestDTO requestDTO);
 }

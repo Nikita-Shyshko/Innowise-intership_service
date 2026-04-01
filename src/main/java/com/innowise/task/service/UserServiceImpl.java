@@ -1,9 +1,13 @@
 package com.innowise.task.service;
 
+import com.innowise.task.dto.UserFilterDTO;
+import com.innowise.task.dto.UserRequestDTO;
+import com.innowise.task.dto.UserUpdateDTO;
 import com.innowise.task.entity.UserStatus;
 import com.innowise.task.repository.dao.UserRepository;
 import com.innowise.task.entity.User;
 import com.innowise.task.exceptions.NotFoundException;
+import com.innowise.task.specification.UserSpecification;
 import com.innowise.task.util.ExceptionMessages;
 import com.innowise.task.dto.UserDTO;
 import com.innowise.task.mapper.UserMapper;
@@ -18,7 +22,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -34,9 +40,10 @@ public class UserServiceImpl
     private final UserMapper usersMapper;
 
     @CachePut(value = "users", key = "#result.id")
-    public UserDTO create(@NotNull(message = ExceptionMessages.USER_DTO_MUST_NOT_BE_NULL) @Valid UserDTO userDto)
+    public UserDTO create(@NotNull(message = ExceptionMessages.USER_DTO_MUST_NOT_BE_NULL) @Valid UserRequestDTO requestDTO)
     {
-        User users = usersMapper.toEntity(userDto);
+        User users = usersMapper.toEntityFromCreateRequest(requestDTO);
+        users.setActive(UserStatus.ACTIVE);
         User savedUser = userRepository.save(users);
 
         log.info("The user has been created with ID: {}", savedUser.getId());
@@ -51,28 +58,31 @@ public class UserServiceImpl
                 .orElseThrow(() -> new NotFoundException(ExceptionMessages.USER_NOT_FOUND + id));
     }
 
-    public Page<UserDTO> getAll(Specification<User> specification, Pageable pageable)
+    public Page<UserDTO> getAll(UserFilterDTO filter)
     {
-        Specification<User> specific = (Specification<User>) specification;
+        int pageNumber = filter.getPageNumber() != null ? filter.getPageNumber() : 0;
+        int pageSize = filter.getPageSize() != null ? filter.getPageSize() : 30;
+        String sortBy = filter.getSortedBy() != null ? filter.getSortedBy() : "id";
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
 
-        log.debug("Fetching all users");
+        Specification<User> specification = Specification.where(UserSpecification.availabilityOfName(filter.getName()))
+                .and(UserSpecification.availabilityOfSurname(filter.getSurname()));
 
-        return userRepository.findAll(specific, pageable).map(usersMapper::toDTO);
+        return userRepository.findAll(specification, pageable)
+                .map(usersMapper::toDTO);
     }
 
     @CachePut(value = "users", key = "#id")
     public UserDTO updateById(
             @NotNull(message = ExceptionMessages.USER_ID_MUST_NOT_BE_NULL) Long id,
-            String name,
-            String surname,
-            String email)
+            @NotNull(message = "User update data must not be null") @Valid UserUpdateDTO updateDTO)
     {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessages.USER_NOT_FOUND + id));
 
-        user.setName(name);
-        user.setSurname(surname);
-        user.setEmail(email);
+        user.setName(updateDTO.getName());
+        user.setSurname(updateDTO.getSurname());
+        user.setEmail(updateDTO.getEmail());
 
         User updatedUser = userRepository.save(user);
         log.info("User with id={} has been updated", id);
