@@ -4,6 +4,7 @@ import com.innowise.task.dto.UserFilterDTO;
 import com.innowise.task.dto.UserRequestDTO;
 import com.innowise.task.dto.UserUpdateDTO;
 import com.innowise.task.entity.UserStatus;
+import com.innowise.task.exceptions.ValidationException;
 import com.innowise.task.repository.dao.UserRepository;
 import com.innowise.task.entity.User;
 import com.innowise.task.exceptions.NotFoundException;

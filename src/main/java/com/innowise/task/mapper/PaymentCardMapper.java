@@ -20,10 +20,16 @@ public interface PaymentCardMapper
     PaymentCardDTO toDto(PaymentCard paymentCards);
 
     @Mapping(source = "userId", target = "user.id")
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "version", ignore = true)
     PaymentCard toEntity(PaymentCardDTO paymentCardDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "user", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "version", ignore = true)
     PaymentCard toEntityFromCreateRequest(PaymentCardRequestDTO requestDTO);
 }

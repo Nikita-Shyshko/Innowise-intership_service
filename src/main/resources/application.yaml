@@ -20,3 +20,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   application:
     name: task
+    properties:
+      hibernate:
+        id:
+          new_generator_mappings: false

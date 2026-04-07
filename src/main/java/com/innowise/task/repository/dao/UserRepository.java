@@ -15,12 +15,12 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>
 {
-    @Query("select r from Users r where r.id = :id")
+    @Query("select r from User r where r.id = :id")
     Optional<User> getUsersById(@Param("id") Long id);
 
     @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("UPDATE Users SET name = :name, surname = :surname, email = :email WHERE id = :id")
+    @Query("UPDATE User SET name = :name, surname = :surname, email = :email WHERE id = :id")
     int updateUserById(@Param("id") Long id,
                        @Param("name") String name,
                        @Param("surname") String surname,
@@ -28,7 +28,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("UPDATE Users r set r.active = :active where r.id = :id")
+    @Query("UPDATE User r set r.active = :active where r.id = :id")
     int setActiveStatusOfUsers(@Param("id") Long id,
                                @Param("active") UserStatus active);
 }

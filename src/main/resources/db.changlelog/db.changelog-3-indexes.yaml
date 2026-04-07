@@ -2,11 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 3
       author: Nikita
-      comment: Migration of indexes
+      comment: Create indexes
       changes:
-        - createIndex:
-            tableName: payment_cards
-            indexName: user_id
-            columns:
-              - column:
-                  name: user_id
+        - sqlFile:
+            path: db/changelog/sql/CreateIndex.sql
