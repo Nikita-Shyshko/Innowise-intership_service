@@ -2,75 +2,19 @@ databaseChangeLog:
   - changeSet:
       id: 1.0
       author: Nikita
-      comment: Create enum type for active
+      comment: Create user_status enum
       changes:
-        -sql: "CREATE TYPE user_status AS ENUM ('ACTIVE', 'INACTIVE', 'SLEEPY', 'HIDDEN');"
+        - sqlFile:
+            path: db/changelog/sql/EnumUserStatus.sql
       rollback:
-        -sql: "DROP TYPE user_status;"
+        - sql: "DROP TYPE user_status;"
 
   - changeSet:
       id: 1.1
       author: Nikita
-      comment: Migration of users table
+      comment: Create users table
       changes:
-        - createTable:
-            tableName: users
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: name
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: surname
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: birth_date
-                  type: DATE
-                  constraints:
-                    nullable: false
-              - column:
-                  name: email
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: active
-                  type: user_status
-                  constraints:
-                    nullable: false
-              - column:
-                  name: created_at
-                  type: TIMESTAMP WITH TIME ZONE
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: TIMESTAMP WITH TIME ZONE
-                  constraints:
-                    nullable: false
-              - column:
-                  name: version
-                  type: INTEGER
-                  constraints:
-                    nullable: false
-
-        - addCheckConstraint:
-            constraintName: ck_users_email
-            tableName: users
-            condition: "email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$'"
-
-        - addCheckConstraint:
-            constraintName: ck_users_birth_date_past
-            tableName: users
-            condition: "birth_date < CURRENT_DATE"
+        - sqlFile:
+            path: db/changelog/sql/UserTable.sql
+      rollback:
+        - sql: "DROP TABLE users;"

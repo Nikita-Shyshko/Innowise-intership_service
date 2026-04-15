@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface PaymentCardRepository extends JpaRepository<PaymentCard, Long>, JpaSpecificationExecutor<PaymentCard>
 {
-    @Query("select r from PaymentCards r where r.id = :id")
+    @Query("select r from PaymentCard r where r.id = :id")
     Optional<PaymentCard> getPaymentCardsById(@Param("id") Long id);
 
     List<PaymentCard> findAllByUserId(Long id);
@@ -35,7 +35,7 @@ public interface PaymentCardRepository extends JpaRepository<PaymentCard, Long>,
 
     @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("update PaymentCards r set r.active = :active where r.id = :id")
+    @Query("update PaymentCard r set r.active = :active where r.id = :id")
     int setActiveStatusOfPaymentCards(@Param("id") Long id,
                                       @Param("active") boolean active);
 }
