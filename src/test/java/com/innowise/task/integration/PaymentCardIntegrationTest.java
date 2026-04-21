@@ -4,25 +4,43 @@ import com.innowise.task.dto.PaymentCardDTO;
 import com.innowise.task.dto.PaymentCardRequestDTO;
 import com.innowise.task.dto.UserDTO;
 import com.innowise.task.dto.UserRequestDTO;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PaymentCardIntegrationTest extends BaseIntegrationTest
 {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @BeforeAll
+    void setUpAll()
+    {
+        jdbcTemplate.execute("DELETE FROM payment_cards");
+        jdbcTemplate.execute("DELETE FROM users");
+    }
+
     @BeforeEach
     void setup()
     {
+        jdbcTemplate.execute("DELETE FROM payment_cards");
+        jdbcTemplate.execute("DELETE FROM users");
         initUrls("/api/users", "/api/cards");
     }
 
@@ -43,7 +61,7 @@ public class PaymentCardIntegrationTest extends BaseIntegrationTest
     {
         PaymentCardRequestDTO cardRequest = new PaymentCardRequestDTO();
         cardRequest.setUserId(userId);
-        String uniqueNumber = "12345678" + (System.currentTimeMillis() % 100000000);
+        String uniqueNumber = "123" + System.currentTimeMillis();;
         cardRequest.setNumber(uniqueNumber);
         cardRequest.setHolder("JOHN DOE");
         cardRequest.setExpirationDate(LocalDate.of(2030, 12, 31));
@@ -60,7 +78,7 @@ public class PaymentCardIntegrationTest extends BaseIntegrationTest
         assertThat(createdCard).isNotNull();
         assertThat(createdCard.getId()).isNotNull();
         assertThat(createdCard.getNumber()).isNotNull();
-        assertThat(createdCard.getNumber()).startsWith("12345678");
+        assertThat(createdCard.getNumber()).startsWith("123");
     }
 
     @Test
@@ -99,7 +117,7 @@ public class PaymentCardIntegrationTest extends BaseIntegrationTest
         PaymentCardDTO updateDto = new PaymentCardDTO();
         updateDto.setId(createdCard.getId());
         updateDto.setUserId(userId);
-        String newNumber = "87654321" + (System.currentTimeMillis() % 100000000);
+        String newNumber = "456" + System.currentTimeMillis();
         updateDto.setNumber(newNumber);
         updateDto.setHolder("JANE DOE");
         updateDto.setExpirationDate(LocalDate.of(2035, 1, 1));

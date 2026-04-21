@@ -5,10 +5,10 @@ databaseChangeLog:
       comment: Create audit functions
       changes:
         - sqlFile:
-            path: db/changelog/sql/Auditing.sql
+            path: db.changelog/sql/Auditing.sql
       rollback:
         - sqlFile:
-            path: db/changelog/sql/rollback/DropFunction.sql
+            path: db.changelog/sql/DropFunction.sql
 
   - changeSet:
       id: 4.1
@@ -16,7 +16,7 @@ databaseChangeLog:
       comment: Create triggers
       changes:
         - sqlFile:
-            path: db/changelog/sql/CreateTriggers.sql
+            path: db.changelog/sql/CreateTrigger.sql
       rollback:
         - sqlFile:
-            path: db/changelog/sql/rollback/DropTriggers.sql
+            path: db.changelog/sql/DropTriggers.sql
