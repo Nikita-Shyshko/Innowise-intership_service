@@ -6,9 +6,15 @@ databaseChangeLog:
       changes:
         - sqlFile:
             path: db.changelog/sql/Auditing.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
       rollback:
         - sqlFile:
             path: db.changelog/sql/DropFunction.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
 
   - changeSet:
       id: 4.1
@@ -17,6 +23,12 @@ databaseChangeLog:
       changes:
         - sqlFile:
             path: db.changelog/sql/CreateTrigger.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
       rollback:
         - sqlFile:
             path: db.changelog/sql/DropTriggers.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
