@@ -5,4 +5,4 @@ databaseChangeLog:
       comment: Create indexes
       changes:
         - sqlFile:
-            path: db/changelog/sql/CreateIndex.sql
+            path: db.changelog/sql/CreateIndex.sql

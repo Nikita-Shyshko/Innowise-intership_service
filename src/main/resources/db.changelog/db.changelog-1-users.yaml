@@ -5,7 +5,7 @@ databaseChangeLog:
       comment: Create user_status enum
       changes:
         - sqlFile:
-            path: db/changelog/sql/EnumUserStatus.sql
+            path: db.changelog/sql/EnumUserStatus.sql
       rollback:
         - sql: "DROP TYPE user_status;"
 
@@ -15,6 +15,6 @@ databaseChangeLog:
       comment: Create users table
       changes:
         - sqlFile:
-            path: db/changelog/sql/UserTable.sql
+            path: db.changelog/sql/UserTable.sql
       rollback:
         - sql: "DROP TABLE users;"

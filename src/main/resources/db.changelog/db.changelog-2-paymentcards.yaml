@@ -5,6 +5,6 @@ databaseChangeLog:
       comment: Create payment_cards table
       changes:
         - sqlFile:
-            path: db/changelog/sql/PaymentCardTable.sql
+            path: db.changelog/sql/PaymentCardTable.sql
       rollback:
         - sql: "DROP TABLE payment_cards;"

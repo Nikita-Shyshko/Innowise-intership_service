@@ -57,7 +57,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: local
       DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-taskdb}
       DB_USERNAME: ${DB_USERNAME:-taskuser}
       DB_PASSWORD: ${DB_PASSWORD:-secret}

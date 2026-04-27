@@ -6,8 +6,10 @@ import com.innowise.task.entity.UserStatus;
 import com.innowise.task.repository.dao.UserRepository;
 import com.innowise.task.entity.User;
 import com.innowise.task.dto.UserDTO;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
@@ -15,12 +17,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserIntegrationTest extends BaseIntegrationTest
 {
     @Autowired
@@ -28,6 +32,15 @@ public class UserIntegrationTest extends BaseIntegrationTest
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @BeforeAll
+    void setupAll()
+    {
+        jdbcTemplate.execute("DELETE FROM users");
+    }
 
     @BeforeEach
     void setup()
@@ -53,15 +66,18 @@ public class UserIntegrationTest extends BaseIntegrationTest
         UserRequestDTO request = new UserRequestDTO();
         request.setName("John");
         request.setSurname("Doe");
-        request.setEmail("john.doe@example.com");
+        String uniqueEmail = "john.doe." + System.currentTimeMillis() + "@example.com";
+        request.setEmail(uniqueEmail);
         request.setBirthDate(LocalDate.of(1990, 1, 1));
+
         ResponseEntity<UserDTO> response = restTemplate.postForEntity(userBaseUrl, request, UserDTO.class);
+
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         UserDTO createdUser = response.getBody();
         assertThat(createdUser).isNotNull();
         assertThat(createdUser.getId()).isNotNull();
         assertThat(createdUser.getName()).isEqualTo("John");
-        assertThat(createdUser.getEmail()).isEqualTo("john.doe@example.com");
+        assertThat(createdUser.getEmail()).isEqualTo(uniqueEmail);
     }
 
     @Test
